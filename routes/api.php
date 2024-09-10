@@ -3,6 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+// User CRUD
+
 Route::post('/users', function () {
     return 'create new user';
 });
@@ -16,4 +18,21 @@ Route::put('/users/{id}', function () {
 });
 Route::delete('/users/{id}', function () {
     return 'delete user by id';
+});
+
+// TASKS CRUD
+
+Route::post('/tasks', function () {
+    return 'creating a new tasks';
+});
+
+Route::get('/tasks', function () {
+    return 'getting all tasks';
+});
+
+Route::put('/tasks/{id}', function () {
+    return 'updating tasks by id';
+});
+Route::delete('/tasks/{id}', function () {
+    return 'delete tasks by id';
 });
