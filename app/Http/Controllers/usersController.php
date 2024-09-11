@@ -5,13 +5,14 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\User;
+use Illuminate\Database\QueryException;
 
 class usersController extends Controller
 {
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'email' => 'required|email',
+            'email' => 'required|email|unique:users,email',
             'password' => 'required',
         ]);
 
@@ -24,27 +25,32 @@ class usersController extends Controller
             return response()->json($data, 400);
         }
 
+        try {
+
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => $request->password
         ]);
 
-        if (!$user) {
-            $data = [
-                'message' => 'Error creating a new user',
-                'status' => 500
-            ];
-            return response()->json($data, 500);
-        }
-
-        $data = [
+        return response()->json([
             'user' => $user,
             'status' => 201
-        ];
+        ], 201);
 
-        return response()->json($data, 201);
+    } catch (QueryException $e) {
+        if ($e->errorInfo[1] == 1062) {
+            return response()->json([
+                'message' => 'The email is already registered',
+                'status' => 409
+            ], 409); 
+        }
 
+        return response()->json([
+            'message' => 'Database error',
+            'status' => 500
+        ], 500);
     }
 
+    }
 }
