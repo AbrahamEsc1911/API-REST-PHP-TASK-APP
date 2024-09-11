@@ -3,11 +3,14 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\usersController;
+
 // User CRUD
+Route::get('/users', [usersController::class, 'getAllUsers']);
+
+Route::get('/users/{id}', [usersController::class, 'getUserById']);
 
 Route::post('/users', [usersController::class, 'register'] );
 
-Route::get('/users', [usersController::class, 'getAllUsers']);
 
 Route::put('/users/{id}', function () {
     return 'Update user info like email and password by id';
