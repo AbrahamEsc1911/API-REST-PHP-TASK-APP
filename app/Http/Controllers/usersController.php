@@ -38,19 +38,42 @@ class usersController extends Controller
             'status' => 201
         ], 201);
 
-    } catch (QueryException $e) {
-        if ($e->errorInfo[1] == 1062) {
+        } catch (QueryException $e) {
+            if ($e->errorInfo[1] == 1062) {
             return response()->json([
                 'message' => 'The email is already registered',
                 'status' => 409
             ], 409); 
+            }
+
+            return response()->json([
+                'message' => 'Database error',
+                'status' => 500
+            ], 500);
         }
-
-        return response()->json([
-            'message' => 'Database error',
-            'status' => 500
-        ], 500);
+    
     }
 
+    public function getAllUsers()
+    {
+        $users = User::all();
+    
+        if ($users->isEmpty()) {
+            $data = [
+                'message' => 'There are no users registered',
+                'status' => 404
+            ];
+        
+            return response()->json($data, 404);
+        }
+    
+        $data = [
+            'users' => $users,
+            'status' => 200
+        ];
+    
+        return response()->json($data, 200);
     }
+
 }
+

@@ -7,9 +7,7 @@ use App\Http\Controllers\usersController;
 
 Route::post('/users', [usersController::class, 'register'] );
 
-Route::get('/users', function () {
-    return 'getting user info to login';
-});
+Route::get('/users', [usersController::class, 'getAllUsers']);
 
 Route::put('/users/{id}', function () {
     return 'Update user info like email and password by id';
