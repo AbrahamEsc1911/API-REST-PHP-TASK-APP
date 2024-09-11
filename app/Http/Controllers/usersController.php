@@ -96,9 +96,71 @@ class usersController extends Controller
         return response()->json($data, 200);
     }
 
-    public function updateUserData(Request $request)
+    public function updateUserData(Request $request, $id)
     {
 
+        if(empty($id) || !is_numeric($id)) {
+            $data = [
+                'message' => 'Invalid or missing Id',
+                'status' => 400
+            ];
+
+            return response()->json($data, 400);
+        }
+
+        $user = User::find($id);
+
+        if (!$user) {
+            $data = [
+                'message' => 'User not found',
+                'status' => 404
+            ];
+
+            return response()->json($data, 404);
+        }
+
+        if (!$request->hasAny(['name', 'email', 'password'])) {
+            return response()->json([
+                'message' => 'No data provided to update',
+                'status' => 400
+            ], 400);
+        }
+
+        $validator = Validator::make($request->all(), [
+            'name' => 'nullable|string|max:255',
+            'email' => 'nullable|email|unique:users,email,'.$user->id,
+            'password' => 'nullable|string|min:8|max:20' 
+        ]);
+
+        if ($validator->fails()) {
+            $data = [
+                'message' => 'Error validating data',
+                'errors' => $validator->errors(),
+                'status' => 400
+            ];
+
+            return response()->json($data, 400);
+        }
+
+        if($request->has('name')) {
+            $user->name = $request->name;
+        }
+
+        if($request->has('email')) {
+            $user->email = $request->email;
+        }
+
+        if($request->has('password')) {
+            $user->password = $request->password;
+        }
+
+        $user->save();
+
+        return response()->json([
+            'message' => 'User data updated successfully',
+            'user' => $user,
+            'status' => 200
+        ], 200);
     }
 
     public function deleteUser($id = null)
