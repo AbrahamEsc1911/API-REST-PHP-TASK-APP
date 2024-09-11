@@ -2,10 +2,10 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use APP\app\Http\Controllers\usersController;
+use App\Http\Controllers\usersController;
 // User CRUD
 
-Route::post('/users', [usersController::Class, 'register'] );
+Route::post('/users', [usersController::class, 'register'] );
 
 Route::get('/users', function () {
     return 'getting user info to login';
