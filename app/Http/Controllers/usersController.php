@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\User;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Hash;
 
 class usersController extends Controller
 {
@@ -13,7 +14,7 @@ class usersController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'email' => 'required|email|unique:users,email',
-            'password' => 'required',
+            'password' => 'required|min:8|max:20',
         ]);
 
         if ($validator->fails()) {
@@ -52,6 +53,34 @@ class usersController extends Controller
             ], 500);
         }
     
+    }
+
+    public function login(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|min:8|max:20',
+        ]);
+
+        if ($validator->fails()) {
+            $data = [
+                'message' => 'Error validating data',
+                'errors' => $validator->errors(),
+                'status' => 400
+            ];
+            return response()->json($data, 400);
+        }
+
+        $user = User::where('email', '=', $request->email)->first();
+
+        if ($user && Hash::check($request->password, $user->password)) {
+        
+            return response()->json(['message' => 'Login successful']);
+        } else {
+          
+            return response()->json(['message' => 'Invalid credentials'], 401);
+        }
+
     }
 
     public function getAllUsers()
