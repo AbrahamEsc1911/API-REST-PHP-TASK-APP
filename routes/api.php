@@ -11,13 +11,9 @@ Route::get('/users/{id}', [usersController::class, 'getUserById']);
 
 Route::post('/users', [usersController::class, 'register'] );
 
+Route::put('/users/{id}', [usersController::class, 'updateUserData']);
 
-Route::put('/users/{id}', function () {
-    return 'Update user info like email and password by id';
-});
-Route::delete('/users/{id}', function () {
-    return 'delete user by id';
-});
+Route::delete('/users/{id?}', [usersController::class, 'deleteUser']);
 
 // TASKS CRUD
 

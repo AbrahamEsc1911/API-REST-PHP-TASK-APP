@@ -96,5 +96,53 @@ class usersController extends Controller
         return response()->json($data, 200);
     }
 
+    public function updateUserData(Request $request)
+    {
+
+    }
+
+    public function deleteUser($id = null)
+    {
+        if(empty($id) || !is_numeric($id)) {
+            $data = [
+                'message' => 'Invalid or missing Id',
+                'status' => 400
+            ];
+
+            return response()->json($data, 400);
+        }
+
+        try {
+            $user = User::find($id);
+
+        if (!$user) {
+            $data = [
+                'message' => 'User to delete not found',
+                'status' => 404
+            ];
+
+            return response()->json($data, 404);
+        }
+
+        $user->delete();
+
+        $data = [
+            'message' => 'User deleted successfully',
+            'status' => 200
+        ];
+
+        return response()->json($data, 200);
+
+        } catch (\Exception $e) {
+        $data = [
+            'message' => 'An error occurred while trying to delete the user',
+            'error' => $e->getMessage(),
+            'status' => 500
+        ];
+
+        return response()->json($data, 500);
+         } 
+    }
+
 }
 
