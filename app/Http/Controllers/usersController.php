@@ -57,30 +57,52 @@ class usersController extends Controller
 
     public function login(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:8|max:20',
-        ]);
+    // Validación de los datos de entrada
+    $validator = Validator::make($request->all(), [
+        'email' => 'required|email',
+        'password' => 'required',
+    ]);
 
-        if ($validator->fails()) {
-            $data = [
-                'message' => 'Error validating data',
-                'errors' => $validator->errors(),
-                'status' => 400
-            ];
-            return response()->json($data, 400);
+    if ($validator->fails()) {
+        $data = [
+            'message' => 'Error validating data',
+            'errors' => $validator->errors(),
+            'status' => 400
+        ];
+        return response()->json($data, 400);
+    }
+
+    // Verificación de las credenciales del usuario
+    $user = User::where('email', '=', $request->email)->first();
+
+    if (!$user || !Hash::check($request->password, $user->password)) {
+        return response()->json(['message' => 'Invalid credentials'], 401);
+    }
+
+    // Creación del token para el usuario autenticado
+    $token = $user->createToken('api-token')->plainTextToken;
+
+    $data = [
+        'message' => 'User logged in successfully',
+        'token' => $token,
+        'status' => 200
+    ];
+    
+    return response()->json($data, 200);
+    }
+
+    public function logout(Request $request)
+    {
+        $user = $request->user(); 
+
+        if (!$user) {
+            return response()->json(['message' => 'User not authenticated'], 401);
         }
 
-        $user = User::where('email', '=', $request->email)->first();
+      
+        $user->tokens()->delete();
 
-        if ($user && Hash::check($request->password, $user->password)) {
-        
-            return response()->json(['message' => 'Login successful']);
-        } else {
-          
-            return response()->json(['message' => 'Invalid credentials'], 401);
-        }
-
+        return response()->json(['message' => 'Logged out successfully'], 200);
     }
 
     public function getAllUsers()

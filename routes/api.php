@@ -9,7 +9,11 @@ Route::get('/users', [usersController::class, 'getAllUsers']);
 
 Route::get('/users/{id}', [usersController::class, 'getUserById']);
 
-Route::post('/users', [usersController::class, 'register'] );
+Route::post('/register', [usersController::class, 'register'] );
+
+Route::post('/login', [usersController::class, 'login'] );
+
+Route::middleware('auth:sanctum')->post('/logout', [usersController::class, 'logout']);
 
 Route::put('/users/{id}', [usersController::class, 'updateUserData']);
 
