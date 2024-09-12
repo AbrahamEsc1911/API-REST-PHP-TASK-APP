@@ -57,8 +57,7 @@ class usersController extends Controller
 
     public function login(Request $request)
     {
-   
-    $validator = Validator::make($request->all(), [
+        $validator = Validator::make($request->all(), [
         'email' => 'required|email',
         'password' => 'required',
     ]);
@@ -72,13 +71,11 @@ class usersController extends Controller
         return response()->json($data, 400);
     }
 
-  
     $user = User::where('email', '=', $request->email)->first();
 
     if (!$user || !Hash::check($request->password, $user->password)) {
         return response()->json(['message' => 'Invalid credentials'], 401);
     }
-
  
     $token = $user->createToken('api-token')->plainTextToken;
 

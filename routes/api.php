@@ -3,35 +3,20 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\usersController;
+use App\Http\Controllers\TaskController;
 
 // User CRUD
 Route::get('/users', [usersController::class, 'getAllUsers']);
-
 Route::get('/users/{id}', [usersController::class, 'getUserById']);
-
-Route::post('/register', [usersController::class, 'register'] );
-
-Route::post('/login', [usersController::class, 'login'] );
-
+Route::post('/register', [usersController::class, 'register']);
+Route::post('/login', [usersController::class, 'login']);
 Route::middleware('auth:sanctum')->post('/logout', [usersController::class, 'logout']);
-
 Route::put('/users/{id}', [usersController::class, 'updateUserData']);
-
 Route::delete('/users/{id?}', [usersController::class, 'deleteUser']);
 
 // TASKS CRUD
+Route::middleware('auth:sanctum')->post('/tasks', [TaskController::class, 'store']);
 
-Route::post('/tasks', function () {
-    return 'creating a new tasks';
-});
-
-Route::get('/tasks', function () {
-    return 'getting all tasks';
-});
-
-Route::put('/tasks/{id}', function () {
-    return 'updating tasks by id';
-});
-Route::delete('/tasks/{id}', function () {
-    return 'delete tasks by id';
-});
+Route::get('/tasks', [TaskController::class, 'index']);  // Obtener todas las tareas
+Route::put('/tasks/{id}', [TaskController::class, 'update']); // Actualizar tarea por ID
+Route::delete('/tasks/{id}', [TaskController::class, 'destroy']); // Eliminar tarea por ID

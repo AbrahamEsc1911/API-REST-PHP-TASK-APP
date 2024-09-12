@@ -4,58 +4,54 @@ namespace App\Http\Controllers;
 
 use App\Models\Task;
 use Illuminate\Http\Request;
+use Exception;
+use Illuminate\Support\Facades\Log;
 
 class TaskController extends Controller
 {
-    /**
-     * Display a listing of the tasks.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        $tasks = Task::all(); // Retrieves all tasks
-        return response()->json($tasks); // Return tasks as JSON
-    }
-
-    /**
-     * Store a newly created task in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        $request->validate([
-            'title' => 'required|string|max:100',
-            'description' => 'nullable|string',
-            'status' => 'required|in:pending,in progress,done',
-            'user_id' => 'required|exists:users,id',
-        ]);
+        try {
+            // Validar los datos (sin `required` para `status`)
+            $validatedData = $request->validate([
+                'title' => 'required|string|max:255',
+                'description' => 'nullable|string',
+                'status' => 'nullable|in:pending,in progress,done', // Status ya no es requerido
+            ]);
 
-        $task = Task::create($request->all()); // Create new task
+            // Si no se proporciona el `status`, asignar "pending" por defecto
+            $validatedData['status'] = $validatedData['status'] ?? 'pending';
 
-        return response()->json($task, 201); // Return created task with 201 status
+            // Asignar el `user_id` del usuario autenticado
+            $validatedData['user_id'] = auth()->id();
+
+            // Crear la tarea
+            $task = Task::create($validatedData);
+
+            return response()->json([
+                'message' => 'Task created successfully',
+                'task' => $task
+            ], 201);
+        } catch (Exception $e) {
+            // Registrar el error para depuración
+            Log::error('Error al crear la tarea: ' . $e->getMessage());
+
+            return response()->json([
+                'message' => 'Error al crear la tarea.',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
-    /**
-     * Display the specified task.
-     *
-     * @param  \App\Models\Task  $task
-     * @return \Illuminate\Http\Response
-     */
+
+
+
+
     public function show(Task $task)
     {
         return response()->json($task); // Return a single task as JSON
     }
 
-    /**
-     * Update the specified task in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Task  $task
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, Task $task)
     {
         $request->validate([
@@ -70,12 +66,6 @@ class TaskController extends Controller
         return response()->json($task); 
     }
 
-    /**
-     * Remove the specified task from storage.
-     *
-     * @param  \App\Models\Task  $task
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Task $task)
     {
         $task->delete(); // Delete task
