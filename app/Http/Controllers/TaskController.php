@@ -2,60 +2,62 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Task;
 use Illuminate\Http\Request;
+use App\Models\Task;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class TaskController extends Controller
 {
-    /**
-     * Display a listing of the tasks.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function createTask(Request $request)
     {
-        $tasks = Task::all(); // Retrieves all tasks
-        return response()->json($tasks); // Return tasks as JSON
-    }
-
-    /**
-     * Store a newly created task in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        $request->validate([
-            'title' => 'required|string|max:100',
+        $validator = Validator::make($request->all(), [
+            'title' => 'required|max:100',
             'description' => 'nullable|string',
-            'status' => 'required|in:pending,in progress,done',
-            'user_id' => 'required|exists:users,id',
+            'status' => 'nullable|string'
         ]);
 
-        $task = Task::create($request->all()); // Create new task
+        if ($validator->fails()) {
+            $data = [
+                'message' => 'Error validating data',
+                'errors' => $validator->errors(),
+                'status' => 400
+            ];
+            return response()->json($data, 400);
+            }
 
-        return response()->json($task, 201); // Return created task with 201 status
+            return response()->json([
+                'title' => $request->title,
+                'description' => $request->description,
+                'status' => $request->status,
+                'user_id' => $request->user()->id
+            ], 201);
+
+            $data = Task::create([
+                'title' => $request->title,
+                'description' => $request->description,
+                'status' => $request->status,
+                'user_id' => $request->user()->id
+            ]);
+
+            return response()->json(['message' => 'Task created successfully', 'task' => $data], 201);
+
+        // $task = new Task();
+        // $task->title = $request->title;
+        // $task->description = $request->description;
+        // $task->status = $request->status;
+        // $task->user_id = $request->user()->id; 
+
+        // $task->save();
+
+        // return response()->json(['message' => 'Task created successfully', 'task' => $task], 201);
     }
 
-    /**
-     * Display the specified task.
-     *
-     * @param  \App\Models\Task  $task
-     * @return \Illuminate\Http\Response
-     */
     public function show(Task $task)
     {
         return response()->json($task); // Return a single task as JSON
     }
 
-    /**
-     * Update the specified task in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Task  $task
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, Task $task)
     {
         $request->validate([
@@ -70,12 +72,6 @@ class TaskController extends Controller
         return response()->json($task); 
     }
 
-    /**
-     * Remove the specified task from storage.
-     *
-     * @param  \App\Models\Task  $task
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Task $task)
     {
         $task->delete(); // Delete task

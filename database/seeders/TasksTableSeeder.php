@@ -7,11 +7,6 @@ use Illuminate\Support\Facades\DB;
 
 class TasksTableSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
     public function run()
     {
         DB::table('tasks')->truncate();
@@ -23,7 +18,7 @@ class TasksTableSeeder extends Seeder
                 DB::table('tasks')->insert([
                     'title' => 'Task ' . $i . ' for User ' . $user_id,
                     'description' => 'Description of task ' . $i . ' for user ' . $user_id,
-                    'status' => $statuses[array_rand($statuses)], // Selecciona un estado aleatorio
+                    'status' => $statuses[array_rand($statuses)], 
                     'user_id' => $user_id,
                     'created_at' => now(),
                     'updated_at' => now(),

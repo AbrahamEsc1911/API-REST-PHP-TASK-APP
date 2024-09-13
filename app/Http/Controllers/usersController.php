@@ -57,38 +57,35 @@ class usersController extends Controller
 
     public function login(Request $request)
     {
-   
-    $validator = Validator::make($request->all(), [
+        $validator = Validator::make($request->all(), [
         'email' => 'required|email',
         'password' => 'required',
-    ]);
+        ]);
 
-    if ($validator->fails()) {
+        if ($validator->fails()) {
         $data = [
             'message' => 'Error validating data',
             'errors' => $validator->errors(),
             'status' => 400
         ];
         return response()->json($data, 400);
-    }
+        }
 
-  
-    $user = User::where('email', '=', $request->email)->first();
+        $user = User::where('email', '=', $request->email)->first();
 
-    if (!$user || !Hash::check($request->password, $user->password)) {
+        if (!$user || !Hash::check($request->password, $user->password)) {
         return response()->json(['message' => 'Invalid credentials'], 401);
-    }
-
+        }
  
-    $token = $user->createToken('api-token')->plainTextToken;
+        $token = $user->createToken('api-token')->plainTextToken;
 
-    $data = [
+        $data = [
         'message' => 'User logged in successfully',
         'token' => $token,
         'status' => 200
-    ];
+        ];
     
-    return response()->json($data, 200);
+        return response()->json($data, 200);
     }
 
     public function logout(Request $request)
@@ -256,6 +253,4 @@ class usersController extends Controller
         return response()->json($data, 500);
          } 
     }
-
 }
-
