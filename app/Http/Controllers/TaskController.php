@@ -34,12 +34,19 @@ class TaskController extends Controller
             ]);
 
             return response()->json(['message' => 'Task created successfully', 'task' => $data], 201);
-
     }
 
-    public function show(Task $task)
+    public function getUserTasks(Request $request)
     {
-        return response()->json($task); // Return a single task as JSON
+        $user = Auth::user();
+
+        if(!$user) {
+            return response()->json(['message' => 'User not authenticated'], 401);
+        }
+
+        $tasks = Task::where('user_id', $user->id)->get();
+
+        return response()->json(['tasks' => $tasks], 200);
     }
 
     public function update(Request $request, Task $task)
