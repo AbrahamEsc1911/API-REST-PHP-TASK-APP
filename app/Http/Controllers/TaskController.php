@@ -26,13 +26,6 @@ class TaskController extends Controller
             return response()->json($data, 400);
             }
 
-            return response()->json([
-                'title' => $request->title,
-                'description' => $request->description,
-                'status' => $request->status,
-                'user_id' => $request->user()->id
-            ], 201);
-
             $data = Task::create([
                 'title' => $request->title,
                 'description' => $request->description,
@@ -42,15 +35,6 @@ class TaskController extends Controller
 
             return response()->json(['message' => 'Task created successfully', 'task' => $data], 201);
 
-        // $task = new Task();
-        // $task->title = $request->title;
-        // $task->description = $request->description;
-        // $task->status = $request->status;
-        // $task->user_id = $request->user()->id; 
-
-        // $task->save();
-
-        // return response()->json(['message' => 'Task created successfully', 'task' => $task], 201);
     }
 
     public function show(Task $task)
