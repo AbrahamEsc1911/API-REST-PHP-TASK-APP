@@ -16,7 +16,6 @@ Route::delete('/users/{id?}', [usersController::class, 'deleteUser']);
 
 // TASKS CRUD
 Route::middleware('auth:sanctum')->post('/tasks', [TaskController::class, 'createTask']);
-Route::middleware('auth:sanctum')->get('/tasks', [TaskController::class, 'getUserTasks']); 
-
-Route::put('/tasks/{id}', [TaskController::class, 'update']); // Actualizar tarea por ID
-Route::delete('/tasks/{id}', [TaskController::class, 'destroy']); // Eliminar tarea por ID
+Route::middleware('auth:sanctum')->get('/tasks', [TaskController::class, 'getUserTasks']);
+Route::middleware('auth:sanctum')->put('/tasks/{id}', [TaskController::class, 'updateTaskById']);
+Route::middleware('auth:sanctum')->delete('/tasks/{id}', [TaskController::class, 'deleteTaskById']);

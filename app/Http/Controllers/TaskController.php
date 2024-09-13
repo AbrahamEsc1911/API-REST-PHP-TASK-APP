@@ -49,24 +49,114 @@ class TaskController extends Controller
         return response()->json(['tasks' => $tasks], 200);
     }
 
-    public function update(Request $request, Task $task)
+    public function updateTaskById(Request $request, $id)
     {
-        $request->validate([
-            'title' => 'required|string|max:100',
+    try {
+
+        $user = Auth::user();
+
+        if (!$user) {
+            return response()->json(['message' => 'User not authenticated'], 401);
+        }
+
+        if (empty($id) || !is_numeric($id)) {
+            return response()->json([
+                'message' => 'Invalid or missing Id',
+                'status' => 400
+            ], 400);
+        }
+
+        $task = Task::find($id);
+
+        if (!$task) {
+            return response()->json([
+                'message' => 'Task not found',
+                'status' => 404
+            ], 404);
+        }
+
+        if (!$request->hasAny(['title', 'description', 'status'])) {
+            return response()->json([
+                'message' => 'Nothing provided to update',
+                'status' => 400
+            ], 400);
+        }
+
+        $validator = Validator::make($request->all(), [
+            'title' => 'nullable|string|max:255',
             'description' => 'nullable|string',
-            'status' => 'required|in:pending,in progress,done',
-            'user_id' => 'required|exists:users,id',
+            'status' => 'nullable|string'
         ]);
 
-        $task->update($request->all()); 
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => 'Error validating data',
+                'errors' => $validator->errors(),
+                'status' => 400
+            ], 400);
+        }
 
-        return response()->json($task); 
+        if ($request->has('title')) {
+            $task->title = $request->title;
+        }
+
+        if ($request->has('description')) {
+            $task->description = $request->description;
+        }
+
+        if ($request->has('status')) {
+            $task->status = $request->status;
+        }
+
+        $task->save();
+
+        return response()->json([
+            'message' => 'Task updated successfully',
+            'task' => $task,
+            'status' => 200
+        ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+            'message' => 'An error occurred while updating the task',
+            'error' => $e->getMessage(),
+            'status' => 500
+            ], 500);
+        }
     }
 
-    public function destroy(Task $task)
-    {
-        $task->delete(); // Delete task
+    public function deleteTaskById($id)
+{
+    try {
+        if (empty($id) || !is_numeric($id)) {
+            return response()->json([
+                'message' => 'Invalid or missing Id',
+                'status' => 400
+            ], 400);
+        }
 
-        return response()->json(null, 204); // Return no content response
+        $task = Task::find($id);
+
+        if (!$task) {
+            return response()->json([
+                'message' => 'Task not found',
+                'status' => 404
+            ], 404);
+        }
+
+        $task->delete();
+
+        return response()->json([
+            'message' => 'Task deleted successfully',
+            'status' => 200
+        ], 200);
+
+    } catch (\Exception $e) {
+        return response()->json([
+            'message' => 'An error occurred while deleting the task',
+            'error' => $e->getMessage(),
+            'status' => 500
+        ], 500);
     }
+}
 }
