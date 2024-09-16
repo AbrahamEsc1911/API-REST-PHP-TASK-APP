@@ -8,9 +8,9 @@ Este proyecto es una API REST para la gestión de tareas. Permite a los usuarios
 - [Stack](#stack)
 - [Clonación y Configuración del Proyecto](#Clonación-y-Configuración-del-Proyecto)
 - [Endpoints](#Endpoints)
--  [Deploy ](#deploy)
-- [Autores ](#Autores)
-- [Agradecimiento ](#thanks)
+- [Deploy](#Deploy)
+- [Autores](#Autores)
+- [Agradecimiento](#Agradecimiento)
 
 ## Características
 
@@ -95,7 +95,7 @@ php artisan db:seed
  php artisan serve
 
 
-## Endpoints⚙️
+## Endpoints
 
 ## Autenticación
 <li> Registro: POST /api/register
@@ -122,14 +122,14 @@ php artisan db:seed
 <li>hecho: Tarea completada.
 
 
-## Deploy 🚀
+## Deploy
 Deploy via Zeabur: [https://PHPTASKAPP.zeabur.zeabur.app/](https://PHPTASKAPP.zeabur.zeabur.app/) <br>
 
-## Autores ✒️
+## Autores
 
 - Abraham Escobar
 - Tatiana Ortiz
 
-## Agradecimiento 🎓
+## Agradecimiento
 
 Muchas gracias a la Geekshubs Academy por la oportunidad de aprender y crecer como desarrollador, cada día mejoras más.
