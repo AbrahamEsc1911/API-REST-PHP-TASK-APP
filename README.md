@@ -3,14 +3,14 @@
 Este proyecto es una API REST para la gestión de tareas. Permite a los usuarios registrarse, iniciar sesión y realizar CRUD (Crear, Leer, Actualizar, Eliminar) de notas/tareas. Además, las tareas pueden cambiar su estado entre `pending`, `progreso` y `hecho`.
 
 ## Table of Contents 📝
-- [Task Management 📁](#Task-Management)
-- [Características ⚙️](#Características)
+- [Task Management](#Task-Management)
+- [Características](#Características)
 - [Stack](#stack)
 - [Clonación y Configuración del Proyecto](#Clonación-y-Configuración-del-Proyecto)
-- [Endpoints ⚙️](#Endpoints)
--  [Deploy 🚀](#deploy)
-- [Autores ✒️](#Autores)
-- [Agradecimiento 🎓](#thanks-🎓)
+- [Endpoints](#Endpoints)
+-  [Deploy ](#deploy)
+- [Autores ](#Autores)
+- [Agradecimiento ](#thanks)
 
 ## Características
 
