@@ -3,13 +3,14 @@
 Este proyecto es una API REST para la gestión de tareas. Permite a los usuarios registrarse, iniciar sesión y realizar CRUD (Crear, Leer, Actualizar, Eliminar) de notas/tareas. Además, las tareas pueden cambiar su estado entre `pending`, `progreso` y `hecho`.
 
 ## Table of Contents 📝
-- [About the Project 📁](#about-the-project-📁)
-- [Local Installation Option ⚙️](#local-installation-option-⚙️)
+- [Task Management 📁](#Task-Management-📁)
+- [Características ⚙️](#Características-⚙️)
 - [Stack](#stack)
+- [Clonación y Configuración del Proyecto](#Clonación-y-Configuración-del-Proyecto)
 - [Endpoints ⚙️](#endpoints-⚙️)
 -  [Deploy 🚀](#deploy-🚀)
-- [Author ✒️](#author-✒️)
-- [Thanks 🎓](#thanks-🎓)
+- [Autores ✒️](#Autores-✒️)
+- [Agradecimiento 🎓](#thanks-🎓)
 
 ## Características
 
@@ -18,6 +19,34 @@ Este proyecto es una API REST para la gestión de tareas. Permite a los usuarios
 - **Gestión de tareas**: Los usuarios pueden crear, leer, actualizar y eliminar tareas.
 - **Estados de tareas**: Cada tarea puede tener un estado: `pending`, `progreso`, `hecho`.
 - **Protección por autenticación**: Solo los usuarios autenticados pueden gestionar sus tareas.
+
+## Stack
+Tecnologías utilizadas para el proyecto:
+
+<div align="center">
+
+<a href="https://www.php.net/">
+    <img src="https://img.shields.io/badge/php-%23777BB4.svg?style=for-the-badge&logo=php&logoColor=white" alt="PHP">
+</a>
+
+<a href="https://laravel.com/">
+    <img src="https://img.shields.io/badge/laravel-%23FF2D20.svg?style=for-the-badge&logo=laravel&logoColor=white" alt="Laravel">
+</a>
+
+<a href="https://www.mysql.com/">
+    <img src="https://img.shields.io/badge/mysql-%234479A1.svg?style=for-the-badge&logo=mysql&logoColor=white" alt="MySQL">
+</a>
+
+<a href="https://getbootstrap.com/">
+    <img src="https://img.shields.io/badge/bootstrap-%23563D7C.svg?style=for-the-badge&logo=bootstrap&logoColor=white" alt="Bootstrap">
+</a>
+
+<a href="https://www.docker.com/">
+    <img src="https://img.shields.io/badge/docker-%232496ED.svg?style=for-the-badge&logo=docker&logoColor=white" alt="Docker">
+</a>
+
+
+</div>
 
 ## Requisitos
 
@@ -65,34 +94,6 @@ php artisan db:seed
 6. Finalmente, ejecuta el servidor local para comenzar a usar la aplicación:
  php artisan serve
 
- ## Stack
-Tecnologías utilizadas para el proyecto:
-
-<div align="center">
-
-<a href="https://www.php.net/">
-    <img src="https://img.shields.io/badge/php-%23777BB4.svg?style=for-the-badge&logo=php&logoColor=white" alt="PHP">
-</a>
-
-<a href="https://laravel.com/">
-    <img src="https://img.shields.io/badge/laravel-%23FF2D20.svg?style=for-the-badge&logo=laravel&logoColor=white" alt="Laravel">
-</a>
-
-<a href="https://www.mysql.com/">
-    <img src="https://img.shields.io/badge/mysql-%234479A1.svg?style=for-the-badge&logo=mysql&logoColor=white" alt="MySQL">
-</a>
-
-<a href="https://getbootstrap.com/">
-    <img src="https://img.shields.io/badge/bootstrap-%23563D7C.svg?style=for-the-badge&logo=bootstrap&logoColor=white" alt="Bootstrap">
-</a>
-
-<a href="https://www.docker.com/">
-    <img src="https://img.shields.io/badge/docker-%232496ED.svg?style=for-the-badge&logo=docker&logoColor=white" alt="Docker">
-</a>
-
-
-</div>
-
 
 ## Endpoints⚙️
 
@@ -124,9 +125,11 @@ Tecnologías utilizadas para el proyecto:
 ## Deploy 🚀
 Deploy via Zeabur: [https://PHPTASKAPP.zeabur.zeabur.app/](https://PHPTASKAPP.zeabur.zeabur.app/) <br>
 
-## Authors ✒️
+## Autores ✒️
 
 - Abraham Escobar
 - Tatiana Ortiz
 
-## Thanks 🎓
+## Agradecimiento 🎓
+
+Muchas gracias a la Geekshubs Academy por la oportunidad de aprender y crecer como desarrollador, cada día mejoras más.
